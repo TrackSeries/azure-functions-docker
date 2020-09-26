@@ -29,13 +29,21 @@ fi
 
 base_dir=$DIR
 
+# Free up CI disk space
+if ! [ -z "$CI_RUN" ]; then
+    echo -e "${CONSOLE_BOLD}${COLOR_GREEN} Cleaning up dangling images to free up CI space... ${CONSOLE_RESET}"
+    docker system prune -f
+fi
+
+# Build image
 current_image="$ACR/$ACR_NAMESPACE/kudulite:$tag"
 echo -e "${CONSOLE_BOLD}${COLOR_GREEN}: Building $current_image ${CONSOLE_RESET}"
 echo -e "${CONSOLE_BOLD}${COLOR_YELLOW}: Source Image $namespace/KuduLite $branch ${CONSOLE_RESET}"
 echo -e "${CONSOLE_BOLD}${COLOR_YELLOW}: Destination Image $current_image ${CONSOLE_RESET}"
 docker build --no-cache --build-arg BRANCH="$branch" --build-arg NAMESPACE="$namespace" -t $current_image -f "$base_dir/Dockerfile" "$base_dir"
-docker push "$current_image"
 
+# Remove the huge oryx build image
 if ! [ -z "$CI_RUN" ]; then
-    docker system prune -f -a
+    echo -e "${CONSOLE_BOLD}${COLOR_GREEN} Deleting dangling oryx build image... ${CONSOLE_RESET}"
+    docker image prune -f
 fi

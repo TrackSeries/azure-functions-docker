@@ -7,6 +7,7 @@ pr:
   paths:
     include:
     - kudulite/*
+    - test/kudulite*
 
 trigger:
   branches:
@@ -15,6 +16,7 @@ trigger:
   paths:
     include:
     - kudulite/*
+    - test/kudulite*
 
 steps:
 - bash: |
@@ -22,7 +24,7 @@ steps:
     set -e
     echo $pswd | docker login -u $(dockerUsername) --password-stdin azurefunctions.azurecr.io
 
-  displayName: login to registry
+  displayName: Login to ACR Registry
   continueOnError: false
   env:
     pswd: $(dockerPassword)
@@ -36,5 +38,29 @@ steps:
     export tag=$(tag)
     chmod +x ./kudulite/build.sh
     ./kudulite/build.sh
-  displayName: build images
+  displayName: Build KuduLite Image
+  continueOnError: false
+
+- bash: |
+    set -e
+    export CI_RUN=1
+    export RUN_TESTS=1
+    export tag=$(tag)
+    export storageAccountName=$(storageAccountName)
+    export storageAccountKey=$(storageAccountKey)
+    export v2RuntimeVersion=$(v2RuntimeVersion)
+    export v3RuntimeVersion=$(v3RuntimeVersion)
+    chmod +x ./kudulite/test.sh
+    ./kudulite/test.sh
+  displayName: Test KuduLite Image
+  continueOnError: false
+
+- bash: |
+    set -e
+    export CI_RUN=1
+    export RUN_TESTS=1
+    export tag=$(tag)
+    chmod +x ./kudulite/publish.sh
+    ./kudulite/publish.sh
+  displayName: Publish KuduLite Image
   continueOnError: false
