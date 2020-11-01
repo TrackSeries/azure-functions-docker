@@ -124,6 +124,9 @@ steps:
       docker pull $SOURCE_REGISTRY/node:$(PrivateVersion)-node12
       docker pull $SOURCE_REGISTRY/node:$(PrivateVersion)-node12-slim
       docker pull $SOURCE_REGISTRY/node:$(PrivateVersion)-node12-appservice
+      docker pull $SOURCE_REGISTRY/node:$(PrivateVersion)-node14
+      docker pull $SOURCE_REGISTRY/node:$(PrivateVersion)-node14-slim
+      docker pull $SOURCE_REGISTRY/node:$(PrivateVersion)-node14-appservice
 
       docker tag $SOURCE_REGISTRY/node:$(PrivateVersion)-node10 $TARGET_REGISTRY/node:$(TargetVersion)
       docker tag $SOURCE_REGISTRY/node:$(PrivateVersion)-node10-slim $TARGET_REGISTRY/node:$(TargetVersion)-slim
@@ -140,6 +143,12 @@ steps:
       docker tag $SOURCE_REGISTRY/node:$(PrivateVersion)-node12-appservice $TARGET_REGISTRY/node:$(TargetVersion)-node12-appservice
       docker tag $SOURCE_REGISTRY/node:$(PrivateVersion)-node12-appservice $TARGET_REGISTRY/node:$(TargetVersion)-node12-appservice-quickstart
 
+      docker tag $SOURCE_REGISTRY/node:$(PrivateVersion)-node14 $TARGET_REGISTRY/node:$(TargetVersion)-node14
+      docker tag $SOURCE_REGISTRY/node:$(PrivateVersion)-node14-slim $TARGET_REGISTRY/node:$(TargetVersion)-node14-slim
+      docker tag $SOURCE_REGISTRY/node:$(PrivateVersion)-node14-appservice $TARGET_REGISTRY/node:$(TargetVersion)-node14-appservice
+      docker tag $SOURCE_REGISTRY/node:$(PrivateVersion)-node14-appservice $TARGET_REGISTRY/node:$(TargetVersion)-node14-appservice-quickstart
+
+
       docker push $TARGET_REGISTRY/node:$(TargetVersion)
       docker push $TARGET_REGISTRY/node:$(TargetVersion)-slim
       docker push $TARGET_REGISTRY/node:$(TargetVersion)-appservice
@@ -155,6 +164,12 @@ steps:
       docker push $TARGET_REGISTRY/node:$(TargetVersion)-node12-appservice
       docker push $TARGET_REGISTRY/node:$(TargetVersion)-node12-appservice-quickstart
 
+      docker push $TARGET_REGISTRY/node:$(TargetVersion)-node14
+      docker push $TARGET_REGISTRY/node:$(TargetVersion)-node14-slim
+      docker push $TARGET_REGISTRY/node:$(TargetVersion)-node14-appservice
+      docker push $TARGET_REGISTRY/node:$(TargetVersion)-node14-appservice-quickstart
+
+
       docker system prune -a -f
     displayName: tag and push node images
     continueOnError: false
@@ -164,6 +179,9 @@ steps:
       docker pull $SOURCE_REGISTRY/powershell:$(PrivateVersion)-powershell6
       docker pull $SOURCE_REGISTRY/powershell:$(PrivateVersion)-powershell6-slim
       docker pull $SOURCE_REGISTRY/powershell:$(PrivateVersion)-powershell6-appservice
+      docker pull $SOURCE_REGISTRY/powershell:$(PrivateVersion)-powershell7
+      docker pull $SOURCE_REGISTRY/powershell:$(PrivateVersion)-powershell7-slim
+      docker pull $SOURCE_REGISTRY/powershell:$(PrivateVersion)-powershell7-appservice
 
       docker tag $SOURCE_REGISTRY/powershell:$(PrivateVersion)-powershell6 $TARGET_REGISTRY/powershell:$(TargetVersion)
       docker tag $SOURCE_REGISTRY/powershell:$(PrivateVersion)-powershell6-slim $TARGET_REGISTRY/powershell:$(TargetVersion)-slim
@@ -175,6 +193,11 @@ steps:
       docker tag $SOURCE_REGISTRY/powershell:$(PrivateVersion)-powershell6-appservice $TARGET_REGISTRY/powershell:$(TargetVersion)-powershell6-appservice
       docker tag $SOURCE_REGISTRY/powershell:$(PrivateVersion)-powershell6-appservice $TARGET_REGISTRY/powershell:$(TargetVersion)-powershell6-appservice-quickstart
 
+      docker tag $SOURCE_REGISTRY/powershell:$(PrivateVersion)-powershell7 $TARGET_REGISTRY/powershell:$(TargetVersion)-powershell7
+      docker tag $SOURCE_REGISTRY/powershell:$(PrivateVersion)-powershell7-slim $TARGET_REGISTRY/powershell:$(TargetVersion)-powershell7-slim
+      docker tag $SOURCE_REGISTRY/powershell:$(PrivateVersion)-powershell7-appservice $TARGET_REGISTRY/powershell:$(TargetVersion)-powershell7-appservice
+      docker tag $SOURCE_REGISTRY/powershell:$(PrivateVersion)-powershell7-appservice $TARGET_REGISTRY/powershell:$(TargetVersion)-powershell7-appservice-quickstart
+
       docker push $TARGET_REGISTRY/powershell:$(TargetVersion)
       docker push $TARGET_REGISTRY/powershell:$(TargetVersion)-slim
       docker push $TARGET_REGISTRY/powershell:$(TargetVersion)-appservice
@@ -184,6 +207,11 @@ steps:
       docker push $TARGET_REGISTRY/powershell:$(TargetVersion)-powershell6-slim
       docker push $TARGET_REGISTRY/powershell:$(TargetVersion)-powershell6-appservice
       docker push $TARGET_REGISTRY/powershell:$(TargetVersion)-powershell6-appservice-quickstart
+
+      docker push $TARGET_REGISTRY/powershell:$(TargetVersion)-powershell7
+      docker push $TARGET_REGISTRY/powershell:$(TargetVersion)-powershell7-slim
+      docker push $TARGET_REGISTRY/powershell:$(TargetVersion)-powershell7-appservice
+      docker push $TARGET_REGISTRY/powershell:$(TargetVersion)-powershell7-appservice-quickstart
 
       docker system prune -a -f
     displayName: tag and push powershell images
