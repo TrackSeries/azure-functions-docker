@@ -11,7 +11,6 @@ pr:
 trigger:
   branches:
     include:
-      - master
       - refs/tags/3.0.*
   paths:
     include:
