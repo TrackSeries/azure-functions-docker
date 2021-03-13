@@ -1,5 +1,5 @@
 # Build the runtime from source
-ARG HOST_VERSION=3.0.15185
+ARG HOST_VERSION=3.0.15417
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS runtime-image
 ARG HOST_VERSION
 
@@ -13,8 +13,8 @@ RUN BUILD_NUMBER=$(echo ${HOST_VERSION} | cut -d'.' -f 3) && \
     mv /azure-functions-host/workers /workers && mkdir /azure-functions-host/workers && \
     rm -rf /root/.local /root/.nuget /src
 
-RUN EXTENSION_BUNDLE_VERSION=1.5.0 && \
-    EXTENSION_BUNDLE_FILENAME=Microsoft.Azure.Functions.ExtensionBundle.1.5.0_linux-x64.zip && \
+RUN EXTENSION_BUNDLE_VERSION=1.6.0 && \
+    EXTENSION_BUNDLE_FILENAME=Microsoft.Azure.Functions.ExtensionBundle.1.6.0_linux-x64.zip && \
     apt-get update && \
     apt-get install -y gnupg wget unzip && \
     wget https://functionscdn.azureedge.net/public/ExtensionBundles/Microsoft.Azure.Functions.ExtensionBundle/$EXTENSION_BUNDLE_VERSION/$EXTENSION_BUNDLE_FILENAME && \
@@ -39,19 +39,7 @@ ENV AzureWebJobsScriptRoot=/home/site/wwwroot \
     HOST_VERSION=${HOST_VERSION}
 
 COPY --from=runtime-image [ "/azure-functions-host", "/azure-functions-host" ]
+
 COPY --from=runtime-image [ "/FuncExtensionBundles", "/FuncExtensionBundles" ]
 
-EXPOSE 2222 80
-
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends gnupg wget unzip curl dialog openssh-server && \
-    # Add remote dotnet debugger
-    curl -sSL https://aka.ms/getvsdbgsh | bash /dev/stdin -v vs2017u5 -l /root/vsdbg && \
-    echo "root:Docker!" | chpasswd
-
-COPY sshd_config /etc/ssh/
-COPY start.sh /azure-functions-host/
-
-RUN chmod +x /azure-functions-host/start.sh
-
-ENTRYPOINT ["/azure-functions-host/start.sh"]
+CMD [ "/azure-functions-host/Microsoft.Azure.WebJobs.Script.WebHost" ]
